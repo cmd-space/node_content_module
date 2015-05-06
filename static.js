@@ -8,10 +8,21 @@ module.exports = function ( request, response ) {
             response.write(contents); 
             response.end();
         });
-    } else if (request.url === '/ninja') {
-        fs.readFile('views/ninja.html', 'utf8', function (errors, contents){
-            response.write(contents);
-            response.end('Hi There, Ninja');
-        })
-    }
+    } else if(request.url != '/favicon.ico'){
+        var statView = fs.lstatSync('./views'+request.url+'.html');            
+        if(statView.isFile){
+            fs.readFile('./views'+request.url+'.html', 'utf8', function (errors, contents){
+                response.write(contents);
+                response.end();
+            })
+//            if(request.url === '/favicon.ico'){
+//            request.writeHead(200, {'Content-type' : 'image/x-icon'});
+//            request.end();
+//            console.log('favicon requested');
+//            return;
+//            } 
+        } else{
+            response.end('File not found!');
+        }
+        }
 }
