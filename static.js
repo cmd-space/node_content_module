@@ -32,14 +32,18 @@ module.exports = function ( request, response ) {
             })
         } else if(path.extname(url) === '.jpeg' || path.extname(url) === '.png' || path.extname(url) === '.gif' || path.extname(url) === '.jpg'){
             var statImg = fs.existsSync('./images'+request.url);
-            var str = path.extname(url);
-            var imageType = str.substring(1, str.length);
-            var cType = 'image/'+imageType;
-            fs.readFile('./images'+request.url, function(errors, contents){
-                response.writeHead(200, {'Content-Type': cType});
-                response.write(contents);
-                response.end();
-            })
+            console.log(statImg);
+            if(statImg){
+                var str = path.extname(url);
+                var imageType = str.substring(1, str.length);
+                var cType = 'image/'+imageType;
+                fs.readFile('./images'+request.url, function(errors, contents){
+                    response.writeHead(200, {'Content-Type': cType});
+                    response.write(contents);
+                    response.end();
+                })
+            }
+            
         } else{
             response.end('File not found!');
         }
